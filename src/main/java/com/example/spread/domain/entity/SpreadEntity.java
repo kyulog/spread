@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,24 +19,16 @@ import java.util.Collection;
 @Entity @Table(name = "spread")
 @Builder
 public class SpreadEntity extends TimeEntity {
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    private int id;
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "spread_token")
+    private int token;
     @Column(nullable = false)
     private int amount;
     @Column(nullable = false)
     private int pplCnt;
-
     private boolean done;
-    private String token;
 
-//    @OneToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL) //(1)
-//    @JoinColumn
-//    private Collection<RecivedInfoEntity> recivedInfoEntities;
+//    @OneToMany @JoinColumn(name = "order")
+//    private List<RecivedEntity> recivedEntityLisies = new ArrayList<RecivedEntity>();
 
-//    @Builder
-//    public SpreadEntity(int id, int amount, int pplCnt){
-//        this.id = id;
-//        this.amount = amount;
-//        this.pplCnt = pplCnt;
-//    }
 }
