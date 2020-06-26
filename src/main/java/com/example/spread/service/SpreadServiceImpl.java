@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class SpreadServiceImpl implements SpreadService{
         return spreadRepository.findAll();
     };
 
-    @Override //@Transactional
+    @Override @Transactional
     public String saveTask(String roomId, long userId, long amount, long pplCnt){
         String token = setToken();
    
@@ -38,15 +39,23 @@ public class SpreadServiceImpl implements SpreadService{
             spreadEntity.addReceivedEntity(receivedEntity);
 
         }
-        
         receivedEntity.setSpreadEntity(spreadEntity);
         spreadRepository.save(spreadEntity);
-
-//        receivedRepository.save(receivedEntity);
 
         return spreadEntity.getId();
     }
 
+
+    public boolean pickMoney(long userId, String token){
+//        Optional<SpreadEntity> spreadEntity = spreadRepository.findByIdIsContainingAndSpreadEntity(token);
+
+//        receivedRepository.find
+
+//        spreadEntity.getU
+
+
+        return true;
+    }
 
     private String setToken()
     {

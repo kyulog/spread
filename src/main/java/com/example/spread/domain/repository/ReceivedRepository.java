@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReceivedRepository extends JpaRepository<ReceivedEntity, Integer>  {
     //    SpreadEntity<ReceivedEntity> findBySpreadEntityId(String id, )
 //    List<SpreadEntity> findBySpreadEntity(SpreadEntity spreadEntity, Sort sort);
+
 }
