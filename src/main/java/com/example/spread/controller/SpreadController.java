@@ -27,8 +27,8 @@ public class SpreadController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody SpreadDto spreadDto)
     {
-        spreadService.saveTask(spreadDto);
-        return new ResponseEntity("Create new job successfully", HttpStatus.OK);
+//        spreadService.saveTask(spreadDto);
+        return new ResponseEntity(spreadService.saveTask(spreadDto), HttpStatus.OK);
     }
 
 }

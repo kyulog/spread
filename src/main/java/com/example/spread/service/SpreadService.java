@@ -8,6 +8,6 @@ import java.util.List;
 
 @Service
 public interface SpreadService {
-    void saveTask(SpreadDto spreadDto);
+    String saveTask(SpreadDto spreadDto);
     List<SpreadEntity> findAll();
 }
