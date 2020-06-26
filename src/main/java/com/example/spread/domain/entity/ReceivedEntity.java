@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter @Setter
 public class ReceivedEntity {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "received_id")
+//    @Column(name = "received_id")
     private int id;
 
 //    @Id @Column(name = "spread_token_id")
@@ -22,7 +22,7 @@ public class ReceivedEntity {
     @Column(nullable = false)
     private int predictedMoney;
 
-    @ManyToOne
-    @JoinColumn(name ="spread_token_id", updatable = false, insertable = false)
-    private SpreadEntity spreadEntity;
+//    @ManyToOne
+//    @JoinColumn(name ="spread_token_id", updatable = false, insertable = false)
+//    private SpreadEntity spreadEntity;
 }

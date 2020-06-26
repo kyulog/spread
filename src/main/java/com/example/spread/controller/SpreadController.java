@@ -20,7 +20,8 @@ public class SpreadController {
     public List<SpreadEntity> getAll() { return spreadService.findAll();}
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody SpreadDto spreadDto)
+    public ResponseEntity<?> create(
+            @RequestBody SpreadDto spreadDto)
     {
         return new ResponseEntity(spreadService.saveTask(spreadDto), HttpStatus.OK);
     }

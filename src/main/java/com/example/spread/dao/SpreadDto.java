@@ -14,7 +14,7 @@ public class SpreadDto {
 
     public SpreadEntity toEntity(String token){
         SpreadEntity spreadEntity = SpreadEntity.builder()
-                .spreadTokenId(token)
+                .id(token)
                 .amount(amount)
                 .pplCnt(pplCnt)
                 .build();

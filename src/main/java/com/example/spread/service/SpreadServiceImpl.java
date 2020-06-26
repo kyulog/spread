@@ -24,7 +24,7 @@ public class SpreadServiceImpl implements SpreadService{
     @Override @Transactional
     public String saveTask(SpreadDto spreadDto){
         String token = setToken();
-        return spreadRepository.save(spreadDto.toEntity(token)).getSpreadTokenId();
+        return spreadRepository.save(spreadDto.toEntity(token)).getId();
     }
 
     private String setToken()
