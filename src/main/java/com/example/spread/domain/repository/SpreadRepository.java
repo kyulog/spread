@@ -3,6 +3,6 @@ import com.example.spread.domain.entity.SpreadEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface SpreadRepository extends JpaRepository<SpreadEntity, Integer>{
+public interface SpreadRepository extends JpaRepository<SpreadEntity, String>{
     // No need implementation, Just one interface, and you have CRUD,
 }

@@ -12,17 +12,20 @@ import javax.persistence.*;
 @Getter @Setter
 public class ReceivedEntity {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-//    @Column(name = "received_id")
     private int id;
 
-//    @Id @Column(name = "spread_token_id")
-//    private String spreadTokenId;
+    private long userId;
+    private long predictedMoney;
 
-    private int userId;
-    @Column(nullable = false)
-    private int predictedMoney;
 
-//    @ManyToOne
-//    @JoinColumn(name ="spread_token_id", updatable = false, insertable = false)
-//    private SpreadEntity spreadEntity;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name ="spread_id", updatable = false, insertable = false)
+//    @JoinColumn(name ="spread_id")
+    private SpreadEntity spreadEntity;
+
+//    public ReceivedEntity(){}
+
+    public ReceivedEntity(long amount){
+        this.predictedMoney = amount;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.spread.controller;
 
+import com.example.spread.dao.ReqeustTask;
 import com.example.spread.dao.SpreadDto;
 import com.example.spread.domain.entity.SpreadEntity;
 import com.example.spread.service.SpreadService;
@@ -19,11 +20,15 @@ public class SpreadController {
     @GetMapping
     public List<SpreadEntity> getAll() { return spreadService.findAll();}
 
+//    @GetMapping List<Re>
+
     @PostMapping
-    public ResponseEntity<?> create(
-            @RequestBody SpreadDto spreadDto)
+    public ResponseEntity<?> create(@RequestHeader("X-ROOM-ID") String roomId,
+            @RequestHeader("X-USER-ID") long userId,
+            @RequestBody ReqeustTask reqeustTask)
     {
-        return new ResponseEntity(spreadService.saveTask(spreadDto), HttpStatus.OK);
+        System.out.println("%s" + roomId);
+        return new ResponseEntity(spreadService.saveTask(roomId, userId, reqeustTask.getAmount(), reqeustTask.getPplCnt() ), HttpStatus.OK);
     }
 
 }

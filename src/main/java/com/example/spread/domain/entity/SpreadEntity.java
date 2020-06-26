@@ -17,19 +17,36 @@ import java.util.List;
 //@IdClass(SpreadEntityId.class)
 @Builder
 public class SpreadEntity extends TimeEntity {
-    @Id //@Column(name = "spread_token_id")
+    @Id @Column(name = "spread_id")
     private String id;
-
     private long amount;
     private long pplCnt;
-    private String roomNum;
+    private String roomId;
+    private long userId;
     private boolean done;
 
 //    @OneToMany
-//    @JoinColumn(name = "spread_token_id")
+//    @JoinColumn(name = "id")
 //    private List<ReceivedEntity> receivedEntities = new ArrayList<ReceivedEntity>();
-    @OneToMany(targetEntity = ReceivedEntity.class,cascade = CascadeType.ALL)
-    @JoinColumn(name ="token_fk", referencedColumnName = "id")
+
+    public SpreadEntity(String token, String roomId, long userId, long amount, long pplCnt, boolean done) {
+        super();
+        this.id = token;
+        this.roomId = roomId;
+        this.userId = userId;
+        this.amount = amount;
+        this.pplCnt = pplCnt;
+        this.done = done;
+    }
+//    @OneToMany(targetEntity = ReceivedEntity.class,cascade = CascadeType.ALL)
+    @JoinColumn(name ="spread_id")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ReceivedEntity> receivedEntities;
 
+    public boolean addReceivedEntity(ReceivedEntity receivedEntity)
+    {
+        if(receivedEntities == null)
+            receivedEntities = new ArrayList<>();
+        return this.receivedEntities.add(receivedEntity);
+    }
 }
