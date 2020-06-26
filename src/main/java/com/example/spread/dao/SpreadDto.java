@@ -8,13 +8,13 @@ import com.example.spread.domain.entity.SpreadEntity;
 @AllArgsConstructor
 @ToString
 public class SpreadDto {
-//    private int id;
+    private String token;
     private int amount;
     private int pplCnt;
 
-    public SpreadEntity toEntity(){
+    public SpreadEntity toEntity(String token){
         SpreadEntity spreadEntity = SpreadEntity.builder()
-//                .id(id)
+                .token(token)
                 .amount(amount)
                 .pplCnt(pplCnt)
                 .build();

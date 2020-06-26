@@ -19,9 +19,9 @@ import java.util.List;
 @Entity @Table(name = "spread")
 @Builder
 public class SpreadEntity extends TimeEntity {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id //@GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "spread_token")
-    private int token;
+    private String token;
     @Column(nullable = false)
     private int amount;
     @Column(nullable = false)
