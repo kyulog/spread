@@ -22,8 +22,8 @@ public class SpreadServiceImpl implements SpreadService{
     };
 
     @Override @Transactional
-    public int saveTask(SpreadDto spreadDto){
-        return spreadRepository.save(spreadDto.toEntity()).getId();
+    public void saveTask(SpreadDto spreadDto){
+        spreadRepository.save(spreadDto.toEntity());
     }
 
 }
