@@ -16,18 +16,12 @@ import java.util.List;
 public class SpreadController {
     private final SpreadService spreadService;
 
-//    @GetMapping("/test")
-//    public SpreadEntity spreadTest(){
-//        return new SpreadEntity(1, 10, 5, false, "ss");
-//    }
-
     @GetMapping
     public List<SpreadEntity> getAll() { return spreadService.findAll();}
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody SpreadDto spreadDto)
     {
-//        spreadService.saveTask(spreadDto);
         return new ResponseEntity(spreadService.saveTask(spreadDto), HttpStatus.OK);
     }
 

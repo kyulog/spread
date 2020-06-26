@@ -1,6 +1,5 @@
 package com.example.spread.domain.entity;
 
-import com.example.spread.idclass.SpreadEntityId;
 import lombok.Builder;
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity @Table(name = "spread")
-@IdClass(SpreadEntityId.class)
+//@IdClass(SpreadEntityId.class)
 @Builder
 public class SpreadEntity extends TimeEntity {
     @Id @Column(name = "spread_token_id")
@@ -30,9 +29,8 @@ public class SpreadEntity extends TimeEntity {
     private String roomNum;
     private boolean done;
 
-//    @OneToMany(mappedBy = "spreadEntity", fetch = FetchType.LAZY)
     @OneToMany
     @JoinColumn(name = "spread_token_id")
-    private List<RecivedEntity> recivedEntities = new ArrayList<RecivedEntity>();
+    private List<ReceivedEntity> receivedEntities = new ArrayList<ReceivedEntity>();
 
 }
