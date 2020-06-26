@@ -29,13 +29,16 @@ public class SpreadServiceImpl implements SpreadService{
     @Override //@Transactional
     public String saveTask(String roomId, long userId, long amount, long pplCnt){
         String token = setToken();
-        ReceivedEntity receivedEntity = new ReceivedEntity(amount);
-        ReceivedEntity receivedEntity2 = new ReceivedEntity(amount+ 10);
+   
         SpreadEntity spreadEntity = new SpreadEntity(token, roomId, userId, amount, pplCnt, false);
+        ReceivedEntity receivedEntity = null;
+        for(int i = 0 ; i < 3; i++)
+        {
+            receivedEntity = new ReceivedEntity(amount+1);
+            spreadEntity.addReceivedEntity(receivedEntity);
 
-        spreadEntity.addReceivedEntity(receivedEntity);
-        spreadEntity.addReceivedEntity(receivedEntity2);
-
+        }
+        
         receivedEntity.setSpreadEntity(spreadEntity);
         spreadRepository.save(spreadEntity);
 

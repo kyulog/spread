@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "received")
 @Getter @Setter
-public class ReceivedEntity {
+public class ReceivedEntity extends TimeEntity{
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
