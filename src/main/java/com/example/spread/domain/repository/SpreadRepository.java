@@ -9,5 +9,7 @@ public interface SpreadRepository extends JpaRepository<SpreadEntity, String>{
     // No need implementation, Just one interface, and you have CRUD,
 
     Optional<SpreadEntity> findById(String token);
+//    @Query("SELECT new com.javatechie.jpa.dto.RequestTask()")
+    SpreadEntity findByUserId(long userId);
 
 }

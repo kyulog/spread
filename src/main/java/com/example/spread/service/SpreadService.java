@@ -10,7 +10,8 @@ import java.util.List;
 @Service
 public interface SpreadService {
     String saveTask(String roomId, long userId, long amount, long pplCnt);
-    boolean pickMoney(long userId, String token);
+    int pickMoney(long userId, String token);
     List<SpreadEntity> findAll();
+    SpreadEntity  findByUserId(long userId);
 
 }
