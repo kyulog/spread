@@ -61,4 +61,4 @@
 
 ## Database Schema
 
-![](/Users/yeokyuli/Library/Application Support/typora-user-images/image-20200627154743220.png)
+![image-20200627155235321](/Users/yeokyuli/Library/Application Support/typora-user-images/image-20200627155235321.png)
