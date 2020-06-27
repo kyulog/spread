@@ -10,12 +10,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "received")
 @Getter @Setter
+@ToString
 public class ReceivedEntity extends TimeEntity{
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private long userId;
     private long predictedMoney;
 
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="spread_id", updatable = false, insertable = false)
     private SpreadEntity spreadEntity;

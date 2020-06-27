@@ -15,11 +15,15 @@ public class ResponseDto {
     private LocalDateTime createData;
     private long amount;
     private long usedAmount;
-    private List<ReceivedDto> receives;
+    private final List<ReceivedDto> receives = new ArrayList<>();
 
     public ResponseDto(long amount, long usedAmount, LocalDateTime createData) {
         this.amount = amount;
         this.usedAmount = usedAmount;
         this.createData = createData;
+    }
+
+    public void addReceived(ReceivedDto rd) {
+        receives.add(rd);
     }
 }

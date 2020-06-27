@@ -1,5 +1,6 @@
 package com.example.spread.service;
 
+import com.example.spread.dao.ReceivedDto;
 import com.example.spread.dao.ResponseDto;
 import com.example.spread.entity.ReceivedEntity;
 import com.example.spread.entity.SpreadEntity;
@@ -29,40 +30,21 @@ public class SpreadServiceImpl implements SpreadService{
         System.out.print("ssssss");
         Optional<SpreadEntity> spreadEntity = spreadRepository.findById(token);
         ResponseDto responseDto = null;
-        //Checking response user is same with created user.
-        if (!spreadRepository.findById(token).isEmpty() && spreadEntity.get().getUserId() == userId) {
 
-            responseDto = new ResponseDto(spreadRepository.findById(token).get().getAmount(),
-                    spreadRepository.findById(token).get().getUsedAmount(),
-                    spreadRepository.findById(token).get().getCreateData());
-
-//            for(int i = 0; i < spreadRepository.findById(token).get().getReceivedEntities().size();i++)
-//            {
-//                if(spreadRepository.findById(token).get().getReceivedEntities().get(i).getUserId() != 0)
-//                {
-//                    responseDto = new ResponseDto(spreadRepository.findById(token).get().getReceivedEntities().get(i).getUserId(),
-//                            spreadRepository.findById(token).get().getReceivedEntities().get(i).getPredictedMoney());
-//                }
-//            }
-////            if(spreadRepository.findById(token).get().getId().equals(userId)) {
-//                System.out.println(spreadRepository.findById(token).get().getAmount());
-//                spreadRepository.findById(token).get().getAmount();
-//                        spreadRepository.findById(token).get().getUsedAmount();
-//                        spreadRepository.findById(token).get().getCreateData();
-//
-////            }
-        } else{
-            throw new ResourceNotFoundException();
-        }
-
-        return responseDto;
+        return spreadEntity.map(it -> {
+            ResponseDto dto = new ResponseDto(it.getAmount(), it.getUsedAmount(), it.getCreateData());
+            it.getReceivedEntities().stream().filter(r -> r.getUserId() != 0).forEach(r -> {
+                ReceivedDto rd = new ReceivedDto(r.getPredictedMoney(), r.getUserId());
+                dto.addReceived(rd);
+            });
+            return dto;
+        }).orElseThrow(() -> new ResourceNotFoundException());
     }
 
     @Override @Transactional
     public String saveTask(String roomId, long userId, long amount, int pplCnt){
         SpreadEntity spreadEntity = new SpreadEntity(generateToken(), roomId, userId, amount, pplCnt);
         ReceivedEntity receivedEntity = null;
-
         long[] div = divide(amount, pplCnt);
         for(int i = 0 ; i < div.length; i++)
         {

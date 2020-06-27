@@ -25,6 +25,7 @@ public class SpreadEntity extends TimeEntity {
     private String roomId;
     private long userId;
 
+    @ToString.Exclude
     @JoinColumn(name ="spread_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReceivedEntity> receivedEntities;
