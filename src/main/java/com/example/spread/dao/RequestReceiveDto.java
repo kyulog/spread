@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ReqeustDto {
-    private long amount;
-    private long pplCnt;
+public class RequestReceiveDto {
+    private String token;
 }

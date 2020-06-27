@@ -20,24 +20,11 @@ public class SpreadEntity extends TimeEntity {
     @Id @Column(name = "spread_id")
     private String id;
     private long amount;
-    private long pplCnt;
+    private int pplCnt;
     private long usedAmount;
     private String roomId;
     private long userId;
 
-//    @OneToMany
-//    @JoinColumn(name = "id")
-//    private List<ReceivedEntity> receivedEntities = new ArrayList<ReceivedEntity>();
-
-    public SpreadEntity(String token, String roomId, long userId, long amount, long pplCnt) {
-        super();
-        this.id = token;
-        this.roomId = roomId;
-        this.userId = userId;
-        this.amount = amount;
-        this.pplCnt = pplCnt;
-    }
-//    @OneToMany(targetEntity = ReceivedEntity.class,cascade = CascadeType.ALL)
     @JoinColumn(name ="spread_id")
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReceivedEntity> receivedEntities;
@@ -47,5 +34,13 @@ public class SpreadEntity extends TimeEntity {
         if(receivedEntities == null)
             receivedEntities = new ArrayList<>();
         return this.receivedEntities.add(receivedEntity);
+    }
+    public SpreadEntity(String token, String roomId, long userId, long amount, int pplCnt) {
+//        super();
+        this.id = token;
+        this.roomId = roomId;
+        this.userId = userId;
+        this.amount = amount;
+        this.pplCnt = pplCnt;
     }
 }

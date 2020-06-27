@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class TimeEntity {
     @CreatedDate
-    @Column(updatable = false)
     private LocalDateTime createData;
-
     @LastModifiedDate
     private LocalDateTime modifiedData;
 }

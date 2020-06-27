@@ -9,8 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class ReceivedDto {
-
     private ReceivedEntity receivedEntity;
-
-
 }

@@ -13,17 +13,12 @@ import javax.persistence.*;
 public class ReceivedEntity extends TimeEntity{
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-
     private long userId;
     private long predictedMoney;
 
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="spread_id", updatable = false, insertable = false)
-//    @JoinColumn(name ="spread_id")
     private SpreadEntity spreadEntity;
-
-//    public ReceivedEntity(){}
 
     public ReceivedEntity(long amount){
         this.predictedMoney = amount;

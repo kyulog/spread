@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface SpreadService {
-    String saveTask(String roomId, long userId, long amount, long pplCnt);
+    String saveTask(String roomId, long userId, long amount, int pplCnt);
     int pickMoney(long userId, String token);
-    SpreadEntity  findByUserId(long userId);
     ResponseDto findByTokenId(String token, long userId);
 }

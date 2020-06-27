@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class ResponseDto {
-
     private LocalDateTime createData;
     private long amount;
     private long usedAmount;
@@ -23,12 +22,4 @@ public class ResponseDto {
         this.usedAmount = usedAmount;
         this.createData = createData;
     }
-
-//    public ResponseDto(long userId, long predictedMoney) {
-//        System.out.println("recevied=======================");
-//        receives = new ArrayList<>();
-//        receives.get(0).setUserId(userId);
-//        receives.get(0).setReceivedMoney(predictedMoney);
-//        this.receives.add((ReceivedDto) receives);
-//    }
 }

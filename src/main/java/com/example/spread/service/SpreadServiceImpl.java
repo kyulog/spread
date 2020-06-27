@@ -5,12 +5,15 @@ import com.example.spread.entity.ReceivedEntity;
 import com.example.spread.entity.SpreadEntity;
 import com.example.spread.repository.ReceivedRepository;
 import com.example.spread.repository.SpreadRepository;
+import exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -22,12 +25,12 @@ public class SpreadServiceImpl implements SpreadService{
     private ReceivedRepository receivedRepository;
 
     @Override @Transactional
-    public ResponseDto findByTokenId(String token, long userId){
+    public ResponseDto findByTokenId(String token, long userId) {
         System.out.print("ssssss");
         Optional<SpreadEntity> spreadEntity = spreadRepository.findById(token);
         ResponseDto responseDto = null;
         //Checking response user is same with created user.
-        if(!spreadRepository.findById(token).isEmpty() && spreadEntity.get().getUserId() == userId) {
+        if (!spreadRepository.findById(token).isEmpty() && spreadEntity.get().getUserId() == userId) {
 
             responseDto = new ResponseDto(spreadRepository.findById(token).get().getAmount(),
                     spreadRepository.findById(token).get().getUsedAmount(),
@@ -48,27 +51,23 @@ public class SpreadServiceImpl implements SpreadService{
 //                        spreadRepository.findById(token).get().getCreateData();
 //
 ////            }
+        } else{
+            throw new ResourceNotFoundException();
         }
 
         return responseDto;
     }
 
-    @Override
-    public SpreadEntity findByUserId(long userId) {
-        return spreadRepository.findByUserId(userId);
-    }
-
     @Override @Transactional
-    public String saveTask(String roomId, long userId, long amount, long pplCnt){
-        String token = setToken();
-   
-        SpreadEntity spreadEntity = new SpreadEntity(token, roomId, userId, amount, pplCnt);
+    public String saveTask(String roomId, long userId, long amount, int pplCnt){
+        SpreadEntity spreadEntity = new SpreadEntity(generateToken(), roomId, userId, amount, pplCnt);
         ReceivedEntity receivedEntity = null;
-        for(int i = 0 ; i < 3; i++)
-        {
-            receivedEntity = new ReceivedEntity(amount+1);
-            spreadEntity.addReceivedEntity(receivedEntity);
 
+        long[] div = divide(amount, pplCnt);
+        for(int i = 0 ; i < div.length; i++)
+        {
+            receivedEntity = new ReceivedEntity(div[i]);
+            spreadEntity.addReceivedEntity(receivedEntity);
         }
         receivedEntity.setSpreadEntity(spreadEntity);
         spreadRepository.save(spreadEntity);
@@ -76,22 +75,65 @@ public class SpreadServiceImpl implements SpreadService{
         return spreadEntity.getId();
     }
 
+    private long[] divide(long amount, int pplCnt)
+    {
+        long[] result = new long[pplCnt];
+        long div;
+        long re = amount;
+        for(int i = 0; i < pplCnt-1; i++)
+        {
+            div = re / (pplCnt + i / pplCnt);
+            re -= div;
+            result[i] = div;
+        }
+        result[pplCnt-1] = re;
 
+        return result;
+    }
+
+    private String generateToken()
+    {
+        String token = "";
+        try {
+            java.security.SecureRandom random = java.security.SecureRandom.getInstance("SHA1PRNG");
+            byte rndBytes[]  = new byte[3];
+
+            do{
+                random.nextBytes(rndBytes);
+                token = Base64.getEncoder().encodeToString(rndBytes).substring(0,3);
+            }while (!spreadRepository.findById(token).isEmpty());
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return token;
+    }
+
+    private boolean timeValidate(LocalDateTime requestTime, LocalDateTime createTime)
+    {
+        boolean result = true;
+        //Checking the task is created within 10 min.
+        if(requestTime.toLocalDate().equals(createTime.toLocalDate()) &&
+            createTime.toLocalTime().getMinute() - requestTime.toLocalTime().getMinute() <= 10);
+        else{
+            result = false;
+        }
+
+        return result;
+    }
     @Transactional
     public int pickMoney(long userId, String token) {
         int result=0;
+
         if(!spreadRepository.findById(token).isEmpty()) {
             //Checking the user is created user or not.
             if (spreadRepository.findById(token).get().getUserId() == userId)
                 result= 1;
-
-            //Checking the task is created with 10 min.
-            LocalDateTime nowTime = LocalDateTime.now();
-            if (nowTime.toLocalDate().equals(spreadRepository.findById(token).get().getCreateData().toLocalDate())
-                    && spreadRepository.findById(token).get().getCreateData().toLocalTime().getMinute() - nowTime.toLocalTime().getMinute() <= 10) {
+            if(timeValidate(LocalDateTime.now(), spreadRepository.findById(token).get().getCreateData())){
                     Optional<SpreadEntity> sp = spreadRepository.findById(token);
 
                     //Should be added the validator to request user are same room with created user
+                    //But, The token is considering the user is including this room.
                     for(int i = 0 ; i < sp.get().getReceivedEntities().size(); i++) {
                         if (sp.get().getReceivedEntities().get(i).getUserId() == userId) {
                             result = 2;
@@ -115,9 +157,6 @@ public class SpreadServiceImpl implements SpreadService{
         return result;
     }
 
-    private String setToken()
-    {
-        return "SSS-BBB-XXX".toString();
-    }
+
 
 }
