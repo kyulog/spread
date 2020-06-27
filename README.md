@@ -61,4 +61,4 @@
 
 ## Database Schema
 
-![](https://drive.google.com/file/d/1yM-XspyLkn3uVvIHg12CvjuFLWAA3Blp/view?usp=sharing)
+![](https://user-images.githubusercontent.com/8610562/85916844-63a7d900-b88f-11ea-8c41-7a9144bb0585.png)
