@@ -51,7 +51,7 @@
 
 ​		-[] 뿌린 건에 대한 조회는 6일 동안 할 수 있습니다.
 
-###Spec
+### Spec
 
 - MySQL
 - Spring boot
@@ -61,4 +61,4 @@
 
 ## Database Schema
 
-![image-20200627154743220](/Users/yeokyuli/Library/Application Support/typora-user-images/image-20200627154743220.png)
+![](/Users/yeokyuli/Library/Application Support/typora-user-images/image-20200627154743220.png)
