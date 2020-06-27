@@ -1,6 +1,6 @@
 package com.example.spread.service;
 
-import com.example.spread.dao.ResponseTask;
+import com.example.spread.dao.ResponseDto;
 import com.example.spread.entity.ReceivedEntity;
 import com.example.spread.entity.SpreadEntity;
 import com.example.spread.repository.ReceivedRepository;
@@ -22,18 +22,35 @@ public class SpreadServiceImpl implements SpreadService{
     private ReceivedRepository receivedRepository;
 
     @Override @Transactional
-    public ResponseTask findByTokenId(String token){
+    public ResponseDto findByTokenId(String token, long userId){
         System.out.print("ssssss");
-//        System.out.print(spreadRepository.findById(token).get().getId());
-        ResponseTask responseTask = null;
-        if(!spreadRepository.findById(token).isEmpty()) {
-            System.out.println(spreadRepository.findById(token).get().getAmount());
-            responseTask.setAmount(spreadRepository.findById(token).get().getAmount());
-            responseTask.setCreateData(spreadRepository.findById(token).get().getCreateData());
-            responseTask.setUsedAmount(spreadRepository.findById(token).get().getUsedAmount());
+        Optional<SpreadEntity> spreadEntity = spreadRepository.findById(token);
+        ResponseDto responseDto = null;
+        //Checking response user is same with created user.
+        if(!spreadRepository.findById(token).isEmpty() && spreadEntity.get().getUserId() == userId) {
 
+            responseDto = new ResponseDto(spreadRepository.findById(token).get().getAmount(),
+                    spreadRepository.findById(token).get().getUsedAmount(),
+                    spreadRepository.findById(token).get().getCreateData());
+
+//            for(int i = 0; i < spreadRepository.findById(token).get().getReceivedEntities().size();i++)
+//            {
+//                if(spreadRepository.findById(token).get().getReceivedEntities().get(i).getUserId() != 0)
+//                {
+//                    responseDto = new ResponseDto(spreadRepository.findById(token).get().getReceivedEntities().get(i).getUserId(),
+//                            spreadRepository.findById(token).get().getReceivedEntities().get(i).getPredictedMoney());
+//                }
+//            }
+////            if(spreadRepository.findById(token).get().getId().equals(userId)) {
+//                System.out.println(spreadRepository.findById(token).get().getAmount());
+//                spreadRepository.findById(token).get().getAmount();
+//                        spreadRepository.findById(token).get().getUsedAmount();
+//                        spreadRepository.findById(token).get().getCreateData();
+//
+////            }
         }
-        return responseTask;
+
+        return responseDto;
     }
 
     @Override

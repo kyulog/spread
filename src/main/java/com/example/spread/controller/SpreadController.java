@@ -1,8 +1,9 @@
 package com.example.spread.controller;
 
-import com.example.spread.dao.PickTask;
-import com.example.spread.dao.ReqeustTask;
-import com.example.spread.dao.ResponseTask;
+import com.example.spread.dao.PickedDto;
+import com.example.spread.dao.ReceivedDto;
+import com.example.spread.dao.ReqeustDto;
+import com.example.spread.dao.ResponseDto;
 import com.example.spread.service.SpreadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,25 +17,22 @@ public class SpreadController {
     private final SpreadService spreadService;
 
     @GetMapping("/spread")
-    public ResponseTask getSpreadTask(@RequestHeader() String token) {
-        System.out.println(token);
-        return spreadService.findByTokenId(token);
+    public ResponseDto getSpreadTask(@RequestHeader("TOKEN") String token,
+                                     @RequestHeader("X-USER-ID") long userId) {
+        return spreadService.findByTokenId(token, userId);
     }
-
-
-//    @GetMapping List<Re>
 
     @PostMapping("/spread")
     public ResponseEntity<?> create(@RequestHeader("X-ROOM-ID") String roomId,
             @RequestHeader("X-USER-ID") long userId,
-            @RequestBody ReqeustTask reqeustTask)
+            @RequestBody ReqeustDto reqeustDto)
     {
-        return new ResponseEntity(spreadService.saveTask(roomId, userId, reqeustTask.getAmount(), reqeustTask.getPplCnt() ), HttpStatus.OK);
+        return new ResponseEntity(spreadService.saveTask(roomId, userId, reqeustDto.getAmount(), reqeustDto.getPplCnt() ), HttpStatus.OK);
     }
 
     @PostMapping("/pick")
     public ResponseEntity<?> pickMoney(@RequestHeader("X-USER-ID") long userId,
-                                       @RequestBody PickTask pickTask)
+                                       @RequestBody PickedDto pickedDto)
     {
         //return type, ErrorCase:0~4, SuccessCase:5~10
         //0: The token is invalid.
@@ -46,7 +44,7 @@ public class SpreadController {
 
         ResponseEntity responseEntity = null;
 
-        switch (spreadService.pickMoney(userId, pickTask.getToken())){
+        switch (spreadService.pickMoney(userId, pickedDto.getToken())){
             case 0: responseEntity = new ResponseEntity("The token is invalid.", HttpStatus.EXPECTATION_FAILED);
                 break;
             case 1: responseEntity = new ResponseEntity("The Users is created this jobs.", HttpStatus.EXPECTATION_FAILED);
