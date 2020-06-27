@@ -60,4 +60,4 @@
 
 
 ## Database Schema
-![image-20200627155235321](/Users/yeokyuli/Library/Application Support/typora-user-images/image-20200627155235321.png)
+![](https://drive.google.com/file/d/1yM-XspyLkn3uVvIHg12CvjuFLWAA3Blp/view?usp=sharing)
