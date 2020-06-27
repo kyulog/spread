@@ -1,20 +1,16 @@
 package com.example.spread.service;
 
-import com.example.spread.dao.ReqeustTask;
-import com.example.spread.dao.SpreadDto;
-import com.example.spread.domain.entity.ReceivedEntity;
-import com.example.spread.domain.entity.SpreadEntity;
-import com.example.spread.domain.repository.ReceivedRepository;
-import com.example.spread.domain.repository.SpreadRepository;
+import com.example.spread.dao.ResponseTask;
+import com.example.spread.entity.ReceivedEntity;
+import com.example.spread.entity.SpreadEntity;
+import com.example.spread.repository.ReceivedRepository;
+import com.example.spread.repository.SpreadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,13 +21,23 @@ public class SpreadServiceImpl implements SpreadService{
     @Autowired
     private ReceivedRepository receivedRepository;
 
-    @Override
-    public List<SpreadEntity> findAll(){
-        return spreadRepository.findAll();
+    @Override @Transactional
+    public ResponseTask findByTokenId(String token){
+        System.out.print("ssssss");
+//        System.out.print(spreadRepository.findById(token).get().getId());
+        ResponseTask responseTask = null;
+        if(!spreadRepository.findById(token).isEmpty()) {
+            System.out.println(spreadRepository.findById(token).get().getAmount());
+            responseTask.setAmount(spreadRepository.findById(token).get().getAmount());
+            responseTask.setCreateData(spreadRepository.findById(token).get().getCreateData());
+            responseTask.setUsedAmount(spreadRepository.findById(token).get().getUsedAmount());
+
+        }
+        return responseTask;
     }
 
     @Override
-    public SpreadEntity  findByUserId(long userId) {
+    public SpreadEntity findByUserId(long userId) {
         return spreadRepository.findByUserId(userId);
     }
 
@@ -39,7 +45,7 @@ public class SpreadServiceImpl implements SpreadService{
     public String saveTask(String roomId, long userId, long amount, long pplCnt){
         String token = setToken();
    
-        SpreadEntity spreadEntity = new SpreadEntity(token, roomId, userId, amount, pplCnt, false);
+        SpreadEntity spreadEntity = new SpreadEntity(token, roomId, userId, amount, pplCnt);
         ReceivedEntity receivedEntity = null;
         for(int i = 0 ; i < 3; i++)
         {
@@ -75,6 +81,7 @@ public class SpreadServiceImpl implements SpreadService{
                             break;
                         }
                         if (sp.get().getReceivedEntities().get(i).getUserId() == 0) {
+                            sp.get().setUsedAmount(sp.get().getUsedAmount() + sp.get().getReceivedEntities().get(i).getPredictedMoney());
                             sp.get().getReceivedEntities().get(i).setUserId(userId);
                             result= 5;
                             break;

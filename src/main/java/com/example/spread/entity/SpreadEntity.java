@@ -1,4 +1,4 @@
-package com.example.spread.domain.entity;
+package com.example.spread.entity;
 
 import lombok.Builder;
 
@@ -21,22 +21,21 @@ public class SpreadEntity extends TimeEntity {
     private String id;
     private long amount;
     private long pplCnt;
+    private long usedAmount;
     private String roomId;
     private long userId;
-    private boolean done;
 
 //    @OneToMany
 //    @JoinColumn(name = "id")
 //    private List<ReceivedEntity> receivedEntities = new ArrayList<ReceivedEntity>();
 
-    public SpreadEntity(String token, String roomId, long userId, long amount, long pplCnt, boolean done) {
+    public SpreadEntity(String token, String roomId, long userId, long amount, long pplCnt) {
         super();
         this.id = token;
         this.roomId = roomId;
         this.userId = userId;
         this.amount = amount;
         this.pplCnt = pplCnt;
-        this.done = done;
     }
 //    @OneToMany(targetEntity = ReceivedEntity.class,cascade = CascadeType.ALL)
     @JoinColumn(name ="spread_id")

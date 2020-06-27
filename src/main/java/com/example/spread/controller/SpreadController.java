@@ -2,15 +2,12 @@ package com.example.spread.controller;
 
 import com.example.spread.dao.PickTask;
 import com.example.spread.dao.ReqeustTask;
-import com.example.spread.dao.SpreadDto;
-import com.example.spread.domain.entity.SpreadEntity;
+import com.example.spread.dao.ResponseTask;
 import com.example.spread.service.SpreadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +16,11 @@ public class SpreadController {
     private final SpreadService spreadService;
 
     @GetMapping("/spread")
-    public List<SpreadEntity> getAll() { return spreadService.findAll();}
+    public ResponseTask getSpreadTask(@RequestHeader() String token) {
+        System.out.println(token);
+        return spreadService.findByTokenId(token);
+    }
+
 
 //    @GetMapping List<Re>
 
@@ -62,11 +63,7 @@ public class SpreadController {
             default:
                 break;
             }
-
-//        if (spreadService.pickMoney(userId, pickTask.getToken()) == false)
-//            return new ResponseEntity("The Users is created this jobs.", HttpStatus.EXPECTATION_FAILED);
-
-        return responseEntity;
+            return responseEntity;
     }
 
 

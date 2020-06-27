@@ -1,4 +1,4 @@
-package com.example.spread.domain.entity;
+package com.example.spread.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
