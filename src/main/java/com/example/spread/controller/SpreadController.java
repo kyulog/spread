@@ -23,9 +23,8 @@ public class SpreadController {
 
     @PostMapping("/spread")
     public ResponseEntity<?> create(@RequestHeader("X-ROOM-ID") String roomId,
-            @RequestHeader("X-USER-ID") long userId,
-            @RequestBody RequestDto requestDto)
-    {
+                                    @RequestHeader("X-USER-ID") long userId,
+                                    @RequestBody RequestDto requestDto) {
         return new ResponseEntity(spreadService.saveTask(roomId, userId, requestDto.getAmount(), requestDto.getPplCnt() ), HttpStatus.OK);
     }
 
@@ -38,12 +37,13 @@ public class SpreadController {
         //1: Created User and Request User is same.
         //2: The user already got the money.
         //3: The time is passed 10 min.
-        //5: Picked the Money.
+        //?: Picked the Money.
         String message = "";
 
         ResponseEntity responseEntity = null;
 
-        switch (spreadService.pickMoney(userId, requestReceiveDto.getToken())){
+        int receivedData = spreadService.pickMoney(userId, requestReceiveDto.getToken());
+        switch (receivedData){
             case 0: responseEntity = new ResponseEntity("The token is invalid.", HttpStatus.EXPECTATION_FAILED);
                 break;
             case 1: responseEntity = new ResponseEntity("The Users is created this jobs.", HttpStatus.EXPECTATION_FAILED);
@@ -54,14 +54,10 @@ public class SpreadController {
                 break;
             case 4: responseEntity = new ResponseEntity("There is no empty room.", HttpStatus.EXPECTATION_FAILED);
                 break;
-            case 5: responseEntity = new ResponseEntity("Picked the Money.", HttpStatus.OK);
-                break;
-
-            default:
+              default:
+                responseEntity = new ResponseEntity("Picked: " + receivedData +".", HttpStatus.OK);
                 break;
             }
             return responseEntity;
     }
-
-
 }

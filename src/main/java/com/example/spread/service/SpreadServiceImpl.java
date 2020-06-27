@@ -56,6 +56,41 @@ public class SpreadServiceImpl implements SpreadService{
 
         return spreadEntity.getId();
     }
+    @Transactional
+    public int pickMoney(long userId, String token) {
+        int result=0;
+
+        if(!spreadRepository.findById(token).isEmpty()) {
+            //Checking the user is created user or not.
+            if (spreadRepository.findById(token).get().getUserId() == userId)
+                result= 1;
+            if(timeValidate(LocalDateTime.now(), spreadRepository.findById(token).get().getCreateData())){
+                    Optional<SpreadEntity> sp = spreadRepository.findById(token);
+
+                    //Should be added the validator to request user are same room with created user
+                    //But, The token is considering the user is including this room.
+                    for(int i = 0 ; i < sp.get().getReceivedEntities().size(); i++) {
+                        if (sp.get().getReceivedEntities().get(i).getUserId() == userId) {
+                            result = 2;
+                            break;
+                        }
+                        if (sp.get().getReceivedEntities().get(i).getUserId() == 0) {
+                            sp.get().setUsedAmount(sp.get().getUsedAmount() + sp.get().getReceivedEntities().get(i).getPredictedMoney());
+                            sp.get().getReceivedEntities().get(i).setUserId(userId);
+                            result= (int) sp.get().getReceivedEntities().get(i).getPredictedMoney();
+                            break;
+                        }
+                        else{
+                            result = 4;
+                        }
+                    }
+            }
+            else{
+                result= 3;
+            }
+        }
+        return result;
+    }
 
     private long[] divide(long amount, int pplCnt)
     {
@@ -96,46 +131,11 @@ public class SpreadServiceImpl implements SpreadService{
         boolean result = true;
         //Checking the task is created within 10 min.
         if(requestTime.toLocalDate().equals(createTime.toLocalDate()) &&
-            createTime.toLocalTime().getMinute() - requestTime.toLocalTime().getMinute() <= 10);
+                createTime.toLocalTime().getMinute() - requestTime.toLocalTime().getMinute() <= 10);
         else{
             result = false;
         }
 
-        return result;
-    }
-    @Transactional
-    public int pickMoney(long userId, String token) {
-        int result=0;
-
-        if(!spreadRepository.findById(token).isEmpty()) {
-            //Checking the user is created user or not.
-            if (spreadRepository.findById(token).get().getUserId() == userId)
-                result= 1;
-            if(timeValidate(LocalDateTime.now(), spreadRepository.findById(token).get().getCreateData())){
-                    Optional<SpreadEntity> sp = spreadRepository.findById(token);
-
-                    //Should be added the validator to request user are same room with created user
-                    //But, The token is considering the user is including this room.
-                    for(int i = 0 ; i < sp.get().getReceivedEntities().size(); i++) {
-                        if (sp.get().getReceivedEntities().get(i).getUserId() == userId) {
-                            result = 2;
-                            break;
-                        }
-                        if (sp.get().getReceivedEntities().get(i).getUserId() == 0) {
-                            sp.get().setUsedAmount(sp.get().getUsedAmount() + sp.get().getReceivedEntities().get(i).getPredictedMoney());
-                            sp.get().getReceivedEntities().get(i).setUserId(userId);
-                            result= 5;
-                            break;
-                        }
-                        else{
-                            result = 4;
-                        }
-                    }
-            }
-            else{
-                result= 3;
-            }
-        }
         return result;
     }
 

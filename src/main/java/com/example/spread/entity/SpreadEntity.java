@@ -37,7 +37,6 @@ public class SpreadEntity extends TimeEntity {
         return this.receivedEntities.add(receivedEntity);
     }
     public SpreadEntity(String token, String roomId, long userId, long amount, int pplCnt) {
-//        super();
         this.id = token;
         this.roomId = roomId;
         this.userId = userId;

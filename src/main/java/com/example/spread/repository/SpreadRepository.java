@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface SpreadRepository extends JpaRepository<SpreadEntity, String>{
     // No need implementation, Just one interface, and you have CRUD,
     Optional<SpreadEntity> findById(String token);
-    SpreadEntity findByUserId(long userId);
 }
