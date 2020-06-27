@@ -60,6 +60,5 @@
 
 
 ## Database Schema
-![](https://drive.google.com/file/d/1yM-XspyLkn3uVvIHg12CvjuFLWAA3Blp/view?usp=sharing)
 
-![db](https://drive.google.com/file/d/1yM-XspyLkn3uVvIHg12CvjuFLWAA3Blp/view?usp=sharing)
+![](https://drive.google.com/file/d/1yM-XspyLkn3uVvIHg12CvjuFLWAA3Blp/view?usp=sharing)
